@@ -1,0 +1,30 @@
+/* In src/styles/global.css */
+:root {
+  --foreground-rgb: 255, 255, 255;
+  --background-start-rgb: 17, 24, 39;
+  --background-end-rgb: 31, 41, 55;
+  --primary-color: #4f46e5;
+  --secondary-color: #8b5cf6;
+  --success-color: #10b981;
+  --warning-color: #f59e0b;
+  --danger-color: #ef4444;
+  --text-color: #f3f4f6;
+  --background-color: #1f2937;
+  --card-bg-color: #374151;
+}
+
+body {
+  color: rgb(var(--foreground-rgb));
+  background: linear-gradient(
+    to bottom,
+    rgb(var(--background-start-rgb)),
+    rgb(var(--background-end-rgb))
+  );
+  min-height: 100vh;
+  font-family: 'Silver', sans-serif;
+}
+
+/* Apply Silver font to specific elements */
+h1, h2, h3, .home-title, .lobby-title {
+  font-family: 'Silver', sans-serif;
+}

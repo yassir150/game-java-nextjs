@@ -1,0 +1,8 @@
+/* src/styles/fonts.css */
+@font-face {
+  font-family: 'Silver';
+  src: url('/fonts/Silver.ttf') format('truetype');
+  font-weight: normal;
+  font-style: normal;
+  font-display: swap; /* Ensures text remains visible during font loading */
+}

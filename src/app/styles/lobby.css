@@ -1,0 +1,90 @@
+.lobby-container {
+  min-height: 100vh;
+  padding: 2rem;
+}
+
+.lobby-card {
+  max-width: 28rem;
+  margin: 0 auto;
+  background-color: var(--card-bg-color);
+  border-radius: 0.5rem;
+  box-shadow: 0 10px 15px rgba(0, 0, 0, 0.2);
+  padding: 1.5rem;
+}
+
+.lobby-title {
+  font-size: 1.875rem;
+  font-weight: bold;
+  margin-bottom: 1.5rem;
+  text-align: center;
+}
+
+.form-group {
+  margin-bottom: 1.5rem;
+}
+
+.form-label {
+  display: block;
+  margin-bottom: 0.5rem;
+}
+
+.form-input {
+  width: 100%;
+  padding: 0.5rem;
+  background-color: #4b5563;
+  border-radius: 0.25rem;
+  border: none;
+  color: var(--text-color);
+}
+
+.character-selection {
+  display: flex;
+  gap: 1rem;
+}
+
+.character-option {
+  flex: 1;
+  padding: 0.75rem;
+  border-radius: 0.25rem;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  cursor: pointer;
+  background-color: #4b5563;
+}
+
+.character-option:hover {
+  background-color: #6b7280;
+}
+
+.character-option.selected-knight {
+  background-color: var(--warning-color);
+}
+
+.character-option.selected-wizard {
+  background-color: var(--primary-color);
+}
+
+.button {
+  width: 100%;
+  padding: 0.5rem;
+  border-radius: 0.25rem;
+  font-weight: bold;
+  border: none;
+  cursor: pointer;
+}
+
+.button-create {
+  background-color: var(--success-color);
+  margin-bottom: 1rem;
+}
+
+.button-join {
+  background-color: var(--secondary-color);
+}
+
+.divider {
+  text-align: center;
+  font-weight: bold;
+  margin: 1rem 0;
+}
