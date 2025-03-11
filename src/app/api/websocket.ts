@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/no-unused-vars */
 // src/app/api/websocket.ts
 import { Client } from '@stomp/stompjs';
 import { GameSession, GameEvent } from '../types/game';
