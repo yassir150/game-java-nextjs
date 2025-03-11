@@ -15,7 +15,7 @@ export default function Home() {
         </div>
         
         <div className="character-showcase">
-          <div className="character-card wizard">
+          <div className="character-card wizard fixed-position">
             <Image 
               src="/assets/wizard/wizard-idle-ezgif.com-crop.gif" 
               alt="Wizard" 
@@ -24,7 +24,7 @@ export default function Home() {
               priority
             />
           </div>
-          <div className="character-card knight">
+          <div className="character-card knight fixed-position">
             <Image 
               src="/assets/king/king-idle-ezgif.com-crop.gif" 
               alt="Knight" 
@@ -33,7 +33,7 @@ export default function Home() {
               priority
             />
           </div>
-          <div className="character-card cthulhu">
+          <div className="character-card cthulhu fixed-position">
             <Image 
               src="/assets/cthulu/cthulu-idle-ezgif.com-crop.gif" 
               alt="Cthulhu" 
@@ -45,7 +45,7 @@ export default function Home() {
         </div>
         
         <div className="cta-container">
-          <Link href="/lobby" className="cta-button">
+          <Link href="/lobby" className="action-button enter-lobby-button">
             Enter Lobby
           </Link>
         </div>

@@ -1,32 +1,46 @@
 // src/app/components/EventLog.tsx
 import { GameEvent } from '../types/game';
+import '../styles/eventLog.css';
 
 interface EventLogProps {
   events: GameEvent[];
 }
 
 export default function EventLog({ events }: EventLogProps) {
-  // Show only last 10 events, most recent first
-  const recentEvents = [...events].reverse().slice(0, 10);
-  
+  // Function to determine event type class
+  const getEventTypeClass = (description: string): string => {
+    if (description.includes('enemy') || description.includes('boss')) {
+      return 'enemy-event';
+    } else if (description.includes('player') || description.includes('attacked')) {
+      return 'player-event';
+    }
+    return 'system-event';
+  };
+
+  // Format timestamp
+  const formatTime = (timestamp: number): string => {
+    const date = new Date(timestamp);
+    return date.toLocaleTimeString([], { hour: '2-digit', minute: '2-digit', second: '2-digit' });
+  };
+
   return (
-    <div className="bg-gray-800 p-4 rounded-lg h-56 overflow-y-auto">
-      <h3 className="text-xl font-bold mb-2">Event Log</h3>
-      
-      {recentEvents.length === 0 ? (
-        <p className="text-gray-400 text-center">No events yet...</p>
-      ) : (
-        <ul className="space-y-2">
-          {recentEvents.map((event, index) => (
-            <li key={index} className="border-b border-gray-700 pb-2">
-              <p className="text-sm">{event.description}</p>
-              <p className="text-xs text-gray-400">
-                {new Date(event.timestamp).toLocaleTimeString()}
-              </p>
-            </li>
-          ))}
-        </ul>
-      )}
+    <div className="event-log">
+      <h3 className="event-log-title">Battle Log</h3>
+      <div className="event-log-entries">
+        {events.length === 0 ? (
+          <p className="no-events">No events yet.</p>
+        ) : (
+          events.map((event, index) => (
+            <div 
+              key={index} 
+              className={`event-entry ${getEventTypeClass(event.description)}`}
+            >
+              <div className="event-timestamp">{formatTime(event.timestamp)}</div>
+              <div className="event-description">{event.description}</div>
+            </div>
+          ))
+        )}
+      </div>
     </div>
   );
 }

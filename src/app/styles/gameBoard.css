@@ -1,0 +1,474 @@
+.board-container {
+  display: flex;
+  flex-direction: column;
+  min-height: 100vh;
+  color: white;
+  padding: 1rem;
+  position: relative;
+  z-index: 10;
+}
+
+.board-header {
+  padding: 1rem;
+  text-align: center;
+  position: relative;
+}
+
+.board-title {
+  font-size: 2rem;
+  font-weight: bold;
+  margin-bottom: 0.5rem;
+  text-shadow: 0 2px 4px rgba(0, 0, 0, 0.5);
+}
+
+.board-status-bar {
+  background-color: rgba(31, 41, 55, 0.8);
+  padding: 0.5rem;
+  border-radius: 0.5rem;
+  margin-bottom: 1rem;
+}
+
+.board-status {
+  font-size: 1.125rem;
+}
+
+/* Character positioning in battle area */
+.battle-area {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  z-index: 5;
+  pointer-events: none;
+}
+
+.fixed-battle-position {
+  position: fixed;
+  bottom: 20%;
+  transform: translateX(-50%);
+}
+
+.battle-character.enemy-character {
+  left: 50%;
+  z-index: 2;
+}
+
+.battle-character.player-character.left {
+  left: 25%;
+  z-index: 3;
+}
+
+.battle-character.player-character.right {
+  left: 75%;
+  z-index: 3;
+}
+
+/* UI Panels */
+.battle-ui {
+  display: flex;
+  flex-direction: column;
+  gap: 2rem;
+  margin-bottom: 2rem;
+}
+
+.enemy-stats {
+  display: flex;
+  justify-content: center;
+}
+
+.players-stats {
+  display: flex;
+  justify-content: center;
+  flex-wrap: wrap;
+  gap: 1.5rem;
+  margin-top: 280px;
+}
+
+.player-card-container {
+  flex: 1;
+  min-width: 250px;
+  max-width: 350px;
+}
+
+/* Characters in a single row */
+.characters-row {
+  display: flex;
+  justify-content: center;
+  align-items: flex-end; /* Align items at the bottom */
+  gap: 1rem;
+  margin-bottom: 2rem;
+  flex-wrap: nowrap;
+  min-height: 400px; /* Ensure enough space for character cards */
+  position: sticky; /* Make it stick in place when scrolling */
+  top: 0;
+  z-index: 20;
+}
+
+.character-card-container {
+  flex: 1;
+  max-width: 300px;
+  min-width: 250px;
+  transition: transform 0.3s ease;
+}
+
+.character-card-container:hover {
+  transform: translateY(-10px);
+}
+
+.enemy-container {
+  margin-top: -30px; /* Move the enemy card up slightly */
+}
+
+/* Player Card Styling */
+.player-card, .enemy-card {
+  background-color: rgba(31, 41, 55, 0.85);
+  border-radius: 0.5rem;
+  padding: 1.5rem;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.3);
+  text-align: center;
+  height: 100%;
+  display: flex;
+  flex-direction: column;
+}
+
+.current-player {
+  border: 2px solid #fbbf24;
+  box-shadow: 0 0 15px rgba(251, 191, 36, 0.5);
+}
+
+.enemy-turn {
+  border: 2px solid #ef4444;
+  box-shadow: 0 0 15px rgba(239, 68, 68, 0.5);
+}
+
+.player-header, .enemy-header {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  margin-bottom: 1rem;
+}
+
+.player-avatar, .enemy-avatar {
+  width: 4rem;
+  height: 4rem;
+  border-radius: 50%;
+  overflow: hidden;
+  position: relative;
+}
+
+.player-info, .enemy-info {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+.player-name, .enemy-name {
+  font-size: 1.5rem;
+  font-weight: bold;
+  margin-bottom: 0.25rem;
+}
+
+.enemy-name {
+  color: #f87171;
+}
+
+.player-class, .enemy-class {
+  font-size: 1rem;
+  color: #d1d5db;
+}
+
+/* Stat containers and progress bars */
+.stat-container {
+  margin-bottom: 0.75rem;
+}
+
+.stat-row {
+  display: flex;
+  justify-content: space-between;
+  font-size: 0.875rem;
+  margin-bottom: 0.25rem;
+}
+
+.progress-bar-bg {
+  width: 100%;
+  height: 0.625rem;
+  background-color: #374151;
+  border-radius: 9999px;
+  overflow: hidden;
+}
+
+.progress-bar {
+  height: 100%;
+  border-radius: 9999px;
+}
+
+.health-high {
+  background-color: #10b981;
+}
+
+.health-medium {
+  background-color: #f59e0b;
+}
+
+.health-low {
+  background-color: #ef4444;
+}
+
+.mana-bar {
+  background-color: #3b82f6;
+}
+
+.enemy-health-bar {
+  background-color: #ef4444;
+}
+
+.super-attack-bar {
+  background-color: #f97316;
+}
+
+.super-attack-counter {
+  font-size: 0.875rem;
+  color: #fbbf24;
+  margin-top: 0.5rem;
+}
+
+.turn-indicator {
+  background-color: #b45309;
+  text-align: center;
+  font-size: 0.875rem;
+  padding: 0.5rem;
+  border-radius: 0.25rem;
+  margin-top: 0.75rem;
+  font-weight: bold;
+}
+
+.enemy-turn-indicator {
+  background-color: #b91c1c;
+  text-align: center;
+  font-size: 0.875rem;
+  padding: 0.5rem;
+  border-radius: 0.25rem;
+  margin-top: 0.75rem;
+  font-weight: bold;
+}
+
+/* Controls area */
+.controls-area {
+  display: grid;
+  grid-template-columns: 1fr 2fr;
+  gap: 1rem;
+  margin-bottom: 1rem;
+  padding: 1rem;
+  position: relative;
+  z-index: 15;
+}
+
+.action-panel-container,
+.event-log-container {
+  background-color: rgba(31, 41, 55, 0.8);
+  border-radius: 0.5rem;
+  padding: 1rem;
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.2);
+}
+
+.session-info {
+  text-align: center;
+  padding: 0.5rem;
+  font-size: 0.75rem;
+  color: #9ca3af;
+  position: relative;
+  z-index: 20;
+}
+
+/* Media queries */
+@media (max-width: 768px) {
+  .fixed-battle-position {
+    position: relative;
+    transform: none;
+  }
+  
+  .battle-area {
+    position: relative;
+    height: auto;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 1rem;
+    margin-bottom: 1rem;
+  }
+  
+  .battle-character.enemy-character,
+  .battle-character.player-character.left,
+  .battle-character.player-character.right {
+    left: auto;
+    bottom: auto;
+  }
+  
+  .controls-area {
+    grid-template-columns: 1fr;
+  }
+  
+  .players-stats {
+    margin-top: 1rem;
+    flex-direction: column;
+    align-items: center;
+  }
+  
+  .player-card-container {
+    width: 100%;
+  }
+}
+
+@media (max-width: 940px) {
+  .characters-row {
+    flex-direction: column;
+    align-items: center;
+    min-height: auto;
+    position: relative;
+    gap: 1.5rem;
+  }
+  
+  .character-card-container {
+    width: 100%;
+    max-width: 350px;
+  }
+  
+  .enemy-container {
+    margin-top: 0;
+    order: -1; /* Move enemy to the top on mobile */
+  }
+  
+  .controls-area {
+    grid-template-columns: 1fr;
+  }
+}
+
+/* Player and enemy images */
+.player-image, .enemy-image {
+  display: flex;
+  justify-content: center;
+  margin-bottom: 1rem;
+}
+
+.player-image img, .enemy-image img {
+  max-width: 100%;
+  height: auto;
+  object-fit: contain;
+}
+
+/* Add to src/app/styles/gameBoard.css */
+
+.countdown-display {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  width: 60px;
+  height: 60px;
+  margin: 0 auto;
+  border-radius: 50%;
+  background-color: rgba(220, 38, 38, 0.2);
+  border: 2px solid rgba(220, 38, 38, 0.5);
+}
+
+.progress-bar {
+  width: 100%;
+  height: 8px;
+  background-color: rgba(120, 120, 120, 0.3);
+  border-radius: 4px;
+  overflow: hidden;
+}
+
+.progress-fill {
+  height: 100%;
+  transition: width 1s linear;
+}
+
+/* New layout with side panels */
+.game-layout {
+  display: flex;
+  width: 100%;
+  height: calc(100vh - 100px); /* Adjust based on your header height */
+  max-height: 900px;
+}
+
+.game-sidebar {
+  width: 300px;
+  padding: 20px;
+  display: flex;
+  flex-direction: column;
+}
+
+.left-sidebar {
+  border-right: 1px solid rgba(255, 255, 255, 0.1);
+  background-color: rgba(0, 0, 0, 0.2);
+}
+
+.right-sidebar {
+  border-left: 1px solid rgba(255, 255, 255, 0.1);
+  background-color: rgba(0, 0, 0, 0.2);
+  overflow-y: auto; /* Make event log scrollable */
+}
+
+.game-center {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  padding: 20px;
+}
+
+.characters-row {
+  display: flex;
+  justify-content: center;
+  align-items: flex-end;
+  width: 100%;
+  margin-bottom: 20px;
+}
+
+.character-card-container {
+  margin: 0 15px;
+  transition: all 0.3s ease;
+}
+
+.character-card-container:hover {
+  transform: translateY(-5px);
+}
+
+.enemy-container {
+  margin-top: -30px; /* Make enemy appear slightly above players */
+}
+
+.session-info {
+  font-size: 12px;
+  color: #aaa;
+  text-align: center;
+  margin-top: 20px;
+  padding: 5px;
+  background-color: rgba(0, 0, 0, 0.3);
+  border-radius: 4px;
+}
+
+/* Responsive adjustments */
+@media (max-width: 1200px) {
+  .game-layout {
+    flex-direction: column;
+    height: auto;
+  }
+  
+  .game-sidebar {
+    width: 100%;
+    max-height: 300px;
+  }
+  
+  .right-sidebar {
+    border-left: none;
+    border-top: 1px solid rgba(255, 255, 255, 0.1);
+  }
+  
+  .left-sidebar {
+    border-right: none;
+    border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+  }
+}

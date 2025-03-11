@@ -74,6 +74,28 @@
   /* flex-grow: 1; Allow it to take available space */
   width: 100%;
   height: 50vh;
+  position: relative;
+  z-index: 2;
+}
+
+/* Fixed position class for character cards */
+.fixed-position {
+  position: fixed;
+  bottom: 20%; /* Adjust this value to position the characters vertically */
+  transform: translateX(-50%);
+}
+
+/* Position each character horizontally */
+.character-card.wizard {
+  left: 25%; /* Left character */
+}
+
+.character-card.knight {
+  left: 50%; /* Center character */
+}
+
+.character-card.cthulhu {
+  left: 75%; /* Right character */
 }
 
 .character-card {
@@ -87,7 +109,59 @@
 } */
 
 .cta-container {
+  position: relative;
+  z-index: 3;
   margin: 1rem 0;
+  margin-top: auto; /* Push to bottom of container */
+  padding-bottom: 2rem;
+}
+
+/* Update button styles to match the action button style */
+.action-button {
+  display: inline-block;
+  padding: 12px 30px;
+  background-color: #4a5568;
+  color: white;
+  border: none;
+  border-radius: 6px;
+  font-size: 1.1rem;
+  font-weight: 600;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  text-decoration: none;
+  text-align: center;
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+}
+
+.action-button:hover {
+  background-color: #2d3748;
+  transform: translateY(-2px);
+  box-shadow: 0 6px 8px rgba(0, 0, 0, 0.2);
+}
+
+.action-button:active {
+  transform: translateY(0);
+}
+
+.enter-lobby-button {
+  background-color: #3182ce;
+  min-width: 200px;
+}
+
+.enter-lobby-button:hover {
+  background-color: #2b6cb0;
+}
+
+/* You can remove or comment out the old cta-button styles */
+/*
+.cta-button {
+  ... your old styles ...
+}
+*/
+
+.cta-container {
+  margin-top: 2rem;
+  text-align: center;
 }
 
 .cta-button {
@@ -114,6 +188,7 @@
   .character-showcase {
     flex-direction: column;
     align-items: center;
+    margin-bottom: 1rem;
   }
   
   .character-card img {
@@ -123,5 +198,16 @@
   
   .character-card.cthulhu {
     margin-top: 1.5rem;
+  }
+  
+  .fixed-position {
+    position: static;
+    transform: none;
+  }
+  
+  .character-card.wizard,
+  .character-card.knight,
+  .character-card.cthulhu {
+    left: auto;
   }
 }

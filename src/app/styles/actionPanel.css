@@ -1,0 +1,437 @@
+/* Action Panel Styling */
+.action-panel {
+  height: 100%;
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-start;
+  background-color: rgba(0, 0, 0, 0.3);
+  border-radius: 8px;
+  padding: 15px;
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+  color: white;
+}
+
+.action-title, .enemy-turn-title {
+  font-size: 1.2rem;
+  margin-bottom: 1rem;
+  color: #f0f0f0;
+  text-align: center;
+  border-bottom: 1px solid rgba(255, 255, 255, 0.2);
+  padding-bottom: 10px;
+  font-weight: bold;
+  text-shadow: 0 2px 4px rgba(0, 0, 0, 0.3);
+}
+
+.enemy-turn-title {
+  color: #f87171;
+}
+
+.waiting-message {
+  text-align: center;
+}
+
+.centered-content {
+  text-align: center;
+  padding: 1rem;
+}
+
+.enemy-preparing {
+  margin-bottom: 0.5rem;
+  font-size: 1rem;
+  color: #f87171;
+}
+
+/* Action buttons container */
+.actions-container {
+  display: flex;
+  flex-direction: column;
+  gap: 0.75rem;
+}
+
+/* Action buttons */
+.action-button {
+  width: 100%;
+  padding: 0.75rem 1rem;
+  border-radius: 0.5rem;
+  font-weight: bold;
+  cursor: pointer;
+  border: none;
+  transition: all 0.2s ease;
+  position: relative;
+  overflow: hidden;
+}
+
+/* Normal attack button */
+.normal-attack {
+  background-color: #2563eb;
+  color: white;
+}
+
+.normal-attack:hover:not(:disabled) {
+  background-color: #1d4ed8;
+  transform: translateY(-2px);
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+}
+
+/* Super attack button for Knight */
+.super-attack-knight {
+  background-color: #d97706;
+  color: white;
+}
+
+.super-attack-knight:hover:not(:disabled) {
+  background-color: #b45309;
+  transform: translateY(-2px);
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+}
+
+/* Super attack button for Wizard */
+.super-attack-wizard {
+  background-color: #7c3aed;
+  color: white;
+}
+
+.super-attack-wizard:hover:not(:disabled) {
+  background-color: #6d28d9;
+  transform: translateY(-2px);
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+}
+
+/* Heal button */
+.heal-button {
+  background-color: #059669;
+  color: white;
+}
+
+.heal-button:hover:not(:disabled) {
+  background-color: #047857;
+  transform: translateY(-2px);
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+}
+
+/* Disabled button states */
+.action-button:disabled, .disabled-button {
+  background-color: #4b5563;
+  color: #9ca3af;
+  cursor: not-allowed;
+  transform: none;
+  box-shadow: none;
+  opacity: 0.7;
+}
+
+.disabled-special {
+  background-color: #374151;
+  color: #9ca3af;
+  cursor: not-allowed;
+}
+
+/* Button with ripple effect on click */
+.action-button::after {
+  content: '';
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  width: 5px;
+  height: 5px;
+  background: rgba(255, 255, 255, 0.5);
+  opacity: 0;
+  border-radius: 100%;
+  transform: scale(1, 1) translate(-50%);
+  transform-origin: 50% 50%;
+}
+
+.action-button:focus:not(:active)::after {
+  animation: ripple 1s ease-out;
+}
+
+@keyframes ripple {
+  0% {
+    transform: scale(0, 0);
+    opacity: 0.7;
+  }
+  20% {
+    transform: scale(25, 25);
+    opacity: 0.5;
+  }
+  100% {
+    opacity: 0;
+    transform: scale(40, 40);
+  }
+}
+
+/* Heal section */
+.heal-section {
+  margin-top: 1rem;
+}
+
+/* Select dropdown styling */
+.heal-select {
+  width: 100%;
+  padding: 0.75rem;
+  background-color: rgba(55, 65, 81, 0.8);
+  border: 1px solid rgba(75, 85, 99, 0.8);
+  border-radius: 0.375rem;
+  color: white;
+  margin-bottom: 0.75rem;
+  appearance: none;
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='16' height='16' fill='white' viewBox='0 0 16 16'%3E%3Cpath d='M7.646 4.646a.5.5 0 0 1 .708 0L12 8.293l3.646-3.647a.5.5 0 0 1 .708.708l-4 4a.5.5 0 0 1-.708 0l-4-4a.5.5 0 0 1 0-.708z'/%3E%3C/svg%3E");
+  background-repeat: no-repeat;
+  background-position: right 1rem center;
+  background-size: 16px 12px;
+}
+
+.heal-select:focus {
+  outline: none;
+  border-color: #3b82f6;
+  box-shadow: 0 0 0 3px rgba(59, 130, 246, 0.3);
+}
+
+.heal-select:disabled {
+  opacity: 0.7;
+  cursor: not-allowed;
+}
+
+/* Enemy turn countdown styling */
+.countdown-display {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  width: 60px;
+  height: 60px;
+  margin: 1rem auto;
+  border-radius: 50%;
+  background-color: rgba(220, 38, 38, 0.2);
+  border: 2px solid rgba(220, 38, 38, 0.5);
+  animation: pulse 1s infinite alternate;
+}
+
+@keyframes pulse {
+  0% {
+    transform: scale(1);
+    box-shadow: 0 0 0 0 rgba(220, 38, 38, 0.4);
+  }
+  100% {
+    transform: scale(1.05);
+    box-shadow: 0 0 0 10px rgba(220, 38, 38, 0);
+  }
+}
+
+.countdown-number {
+  font-size: 1.875rem;
+  font-weight: bold;
+  color: #ef4444;
+}
+
+.progress-bar {
+  width: 100%;
+  height: 8px;
+  background-color: rgba(120, 120, 120, 0.3);
+  border-radius: 4px;
+  overflow: hidden;
+  margin-top: 1rem;
+}
+
+.progress-fill {
+  height: 100%;
+  background-color: #ef4444;
+  transition: width 1s linear;
+}
+
+/* Enemy turn section */
+.action-panel div.text-center {
+  text-align: center;
+  padding: 1rem;
+}
+
+.action-panel p.mb-2 {
+  margin-bottom: 0.5rem;
+  font-size: 1rem;
+  color: #f87171;
+}
+
+/* Action panel section dividers */
+.action-panel .space-y-3 {
+  display: flex;
+  flex-direction: column;
+  gap: 0.75rem;
+}
+
+.action-panel .mt-4 {
+  margin-top: 1rem;
+}
+
+/* Customized classes for your current HTML structure */
+.action-panel .w-full {
+  width: 100%;
+}
+
+.action-panel .bg-blue-600 {
+  background-color: #2563eb;
+}
+
+.action-panel .hover\:bg-blue-500:hover {
+  background-color: #3b82f6;
+}
+
+.action-panel .text-white {
+  color: white;
+}
+
+.action-panel .py-2 {
+  padding-top: 0.5rem;
+  padding-bottom: 0.5rem;
+}
+
+.action-panel .px-4 {
+  padding-left: 1rem;
+  padding-right: 1rem;
+}
+
+.action-panel .rounded-lg {
+  border-radius: 0.5rem;
+}
+
+.action-panel .bg-yellow-600 {
+  background-color: #d97706;
+}
+
+.action-panel .hover\:bg-yellow-500:hover {
+  background-color: #f59e0b;
+}
+
+.action-panel .bg-purple-600 {
+  background-color: #7c3aed;
+}
+
+.action-panel .hover\:bg-purple-500:hover {
+  background-color: #8b5cf6;
+}
+
+.action-panel .bg-green-600 {
+  background-color: #059669;
+}
+
+.action-panel .hover\:bg-green-500:hover {
+  background-color: #10b981;
+}
+
+.action-panel .bg-gray-700 {
+  background-color: #374151;
+}
+
+.action-panel .text-gray-400 {
+  color: #9ca3af;
+}
+
+.action-panel .cursor-not-allowed {
+  cursor: not-allowed;
+}
+
+.action-panel .disabled\:bg-gray-600:disabled {
+  background-color: #4b5563;
+}
+
+.action-panel .p-2 {
+  padding: 0.5rem;
+}
+
+.action-panel .bg-gray-700 {
+  background-color: #374151;
+}
+
+.action-panel .rounded {
+  border-radius: 0.25rem;
+}
+
+.action-panel .mb-2 {
+  margin-bottom: 0.5rem;
+}
+
+.action-panel .text-center {
+  text-align: center;
+}
+
+.action-panel .text-xl {
+  font-size: 1.25rem;
+}
+
+.action-panel .font-bold {
+  font-weight: bold;
+}
+
+.action-panel .mb-4 {
+  margin-bottom: 1rem;
+}
+
+.action-panel .text-red-400 {
+  color: #f87171;
+}
+
+.action-panel .py-3 {
+  padding-top: 0.75rem;
+  padding-bottom: 0.75rem;
+}
+
+.action-panel .bg-gray-600 {
+  background-color: #4b5563;
+}
+
+.action-panel .mt-2 {
+  margin-top: 0.5rem;
+}
+
+.action-panel .bg-red-500 {
+  background-color: #ef4444;
+}
+
+/* Add to src/app/styles/actionPanel.css */
+
+.victory-title {
+  color: #10b981;
+  text-align: center;
+  font-weight: bold;
+  font-size: 1.5rem;
+  margin-bottom: 1rem;
+}
+
+.defeat-title {
+  color: #ef4444;
+  text-align: center;
+  font-weight: bold;
+  font-size: 1.5rem;
+  margin-bottom: 1rem;
+}
+
+.game-over-message {
+  text-align: center;
+  margin-bottom: 1.5rem;
+}
+
+.victory-text {
+  color: #10b981;
+  font-weight: bold;
+}
+
+.defeat-text {
+  color: #ef4444;
+  font-weight: bold;
+}
+
+.return-button {
+  background-color: #4b5563;
+  color: white;
+  margin-top: 1rem;
+}
+
+.return-button:hover {
+  background-color: #374151;
+}
+
+.button-link {
+  display: block;
+  width: 100%;
+  height: 100%;
+  color: white;
+  text-decoration: none;
+  text-align: center;
+}

@@ -1,7 +1,7 @@
 // src/app/api/gameApi.ts
 import { GameSession, PlayerSelection, GameEvent } from '../types/game';
 
-const API_URL = 'http://localhost:8080/api/game'; // Adjust to your backend URL
+const API_URL = 'http://34.34.49.188:8080/api/game'; // Adjust to your backend URL
 
 export const gameApi = {
   // Get available sessions

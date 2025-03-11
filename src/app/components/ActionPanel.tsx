@@ -1,13 +1,17 @@
+/* eslint-disable @typescript-eslint/no-unused-vars */
+/* eslint-disable react-hooks/exhaustive-deps */
+/* eslint-disable @typescript-eslint/no-explicit-any */
 // src/app/components/ActionPanel.tsx
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import { GameSession, Player, Wizard } from '../types/game';
 import { gameApi } from '../api/gameApi';
+import '../styles/actionPanel.css';
 
 interface ActionPanelProps {
   sessionId: string;
   gameSession: GameSession;
   isCurrentPlayer: boolean;
-  onActionTaken: () => void;
+  onActionTaken: (actionType?: 'normal' | 'super' | 'heal') => void;
 }
 
 export default function ActionPanel({ 
@@ -18,52 +22,61 @@ export default function ActionPanel({
 }: ActionPanelProps) {
   const [loading, setLoading] = useState(false);
   const [selectedHealTarget, setSelectedHealTarget] = useState<string>('');
+  const [processingEnemyTurn, setProcessingEnemyTurn] = useState(false);
+  const [enemyTurnCountdown, setEnemyTurnCountdown] = useState(0);
   
-  if (!isCurrentPlayer) {
-    return (
-      <div className="bg-gray-800 p-4 rounded-lg">
-        <p className="text-gray-400 text-center">Waiting for other player or enemy to act...</p>
-      </div>
-    );
-  }
+  // Check if game is over
+  const isGameOver = gameSession.status === 'PLAYERS_WON' || gameSession.status === 'ENEMY_WON';
   
-  if (gameSession.enemyTurn) {
-    const handleEnemyTurn = async () => {
-      setLoading(true);
-      try {
-        await gameApi.enemyTurn(sessionId);
-        onActionTaken();
-      } catch (error) {
-        console.error('Failed to process enemy turn:', error);
-      } finally {
-        setLoading(false);
-      }
-    };
+  // Process enemy turn automatically after player's action
+  useEffect(() => {
+    if (gameSession.enemyTurn && !processingEnemyTurn && enemyTurnCountdown === 0 && !isGameOver) {
+      // Start 3-second countdown for enemy turn
+      setProcessingEnemyTurn(true);
+      setEnemyTurnCountdown(3);
+    }
+  }, [gameSession.enemyTurn, processingEnemyTurn, enemyTurnCountdown, isGameOver]);
+  
+  // Countdown timer for enemy turn
+  useEffect(() => {
+    let timer: NodeJS.Timeout;
     
-    return (
-      <div className="bg-gray-800 p-4 rounded-lg">
-        <h3 className="text-xl font-bold mb-4 text-red-400 text-center">Enemy Turn</h3>
-        <button
-          onClick={handleEnemyTurn}
-          disabled={loading}
-          className="w-full bg-red-600 hover:bg-red-500 disabled:bg-gray-600 text-white py-3 px-4 rounded-lg font-bold"
-        >
-          {loading ? 'Processing...' : 'Process Enemy Attack'}
-        </button>
-      </div>
-    );
-  }
+    if (enemyTurnCountdown > 0 && !isGameOver) {
+      timer = setTimeout(() => {
+        setEnemyTurnCountdown(prev => prev - 1);
+      }, 1000);
+    } else if (enemyTurnCountdown === 0 && processingEnemyTurn && !isGameOver) {
+      // Process enemy turn after countdown reaches 0
+      handleEnemyTurn();
+    }
+    
+    return () => {
+      if (timer) clearTimeout(timer);
+    };
+  }, [enemyTurnCountdown, processingEnemyTurn, isGameOver]);
   
-  const currentPlayer = gameSession.players[gameSession.currentPlayerIndex];
-  const isWizard = 'mp' in currentPlayer;
-  const isKnight = 'superAttacksAvailable' in currentPlayer;
-  const wizard = isWizard ? currentPlayer as Wizard : null;
+  // Handle enemy turn processing
+  const handleEnemyTurn = async () => {
+    if (isGameOver) return;
+    
+    try {
+      await gameApi.enemyTurn(sessionId);
+      onActionTaken();
+    } catch (error) {
+      console.error('Failed to process enemy turn:', error);
+    } finally {
+      setProcessingEnemyTurn(false);
+    }
+  };
   
+  // Handle normal attack
   const handleNormalAttack = async () => {
+    if (isGameOver) return;
+    
     setLoading(true);
     try {
       await gameApi.normalAttack(sessionId);
-      onActionTaken();
+      onActionTaken('normal'); // Pass the action type
     } catch (error) {
       console.error('Failed to perform normal attack:', error);
     } finally {
@@ -71,11 +84,14 @@ export default function ActionPanel({
     }
   };
   
+  // Handle super attack
   const handleSuperAttack = async () => {
+    if (isGameOver) return;
+    
     setLoading(true);
     try {
       await gameApi.superAttack(sessionId);
-      onActionTaken();
+      onActionTaken('super'); // Pass the action type
     } catch (error) {
       console.error('Failed to perform super attack:', error);
     } finally {
@@ -83,13 +99,14 @@ export default function ActionPanel({
     }
   };
   
+  // Handle heal (for Wizard)
   const handleHeal = async () => {
-    if (!selectedHealTarget || !isWizard) return;
+    if (!selectedHealTarget || isGameOver) return;
     
     setLoading(true);
     try {
       await gameApi.heal(sessionId, selectedHealTarget);
-      onActionTaken();
+      onActionTaken('heal'); // Pass the action type
     } catch (error) {
       console.error('Failed to perform heal:', error);
     } finally {
@@ -97,16 +114,80 @@ export default function ActionPanel({
       setSelectedHealTarget('');
     }
   };
+
+  // If game is over, show result message
+  if (isGameOver) {
+    return (
+      <div className="action-panel">
+        <h3 className={gameSession.status === 'PLAYERS_WON' ? "victory-title" : "defeat-title"}>
+          {gameSession.status === 'PLAYERS_WON' ? 'Victory!' : 'Game Over!'}
+        </h3>
+        <p className="game-over-message">
+          {gameSession.status === 'PLAYERS_WON' 
+            ? 'You have defeated the boss!' 
+            : 'The boss has defeated all players!'}
+        </p>
+        <div className="action-button return-button">
+          <a href="/lobby" className="button-link">Return to Lobby</a>
+        </div>
+      </div>
+    );
+  }
+  
+  // If it's not the current player's turn
+  if (!isCurrentPlayer && !gameSession.enemyTurn) {
+    return (
+      <div className="action-panel">
+        <p className="waiting-message">Waiting for other player to act...</p>
+      </div>
+    );
+  }
+  
+  // If it's the enemy's turn
+  if (gameSession.enemyTurn) {
+    return (
+      <div className="action-panel">
+        <h3 className="enemy-turn-title">Enemy Turn</h3>
+        {processingEnemyTurn ? (
+          <div className="centered-content">
+            <p className="enemy-preparing">Enemy is preparing to attack...</p>
+            <div className="countdown-display">
+              <span className="countdown-number">{enemyTurnCountdown}</span>
+            </div>
+            <div className="progress-bar">
+              <div 
+                className="progress-fill"
+                style={{ width: `${(enemyTurnCountdown / 3) * 100}%` }}
+              ></div>
+            </div>
+          </div>
+        ) : (
+          <button
+            disabled={true}
+            className="action-button disabled-button"
+          >
+            Waiting for enemy attack...
+          </button>
+        )}
+      </div>
+    );
+  }
+  
+  // Current player's turn - display action options
+  const currentPlayer = gameSession.players[gameSession.currentPlayerIndex];
+  const isWizard = 'mp' in currentPlayer;
+  const isKnight = 'superAttacksAvailable' in currentPlayer;
+  const wizard = isWizard ? currentPlayer as Wizard : null;
   
   return (
-    <div className="bg-gray-800 p-4 rounded-lg">
-      <h3 className="text-xl font-bold mb-4 text-center">Your Actions</h3>
+    <div className="action-panel">
+      <h3 className="action-title">Your Actions</h3>
       
-      <div className="space-y-3">
+      <div className="actions-container">
         <button
           onClick={handleNormalAttack}
-          disabled={loading}
-          className="w-full bg-blue-600 hover:bg-blue-500 disabled:bg-gray-600 text-white py-2 px-4 rounded-lg"
+          disabled={loading || isGameOver}
+          className="action-button normal-attack"
         >
           Normal Attack
         </button>
@@ -114,12 +195,12 @@ export default function ActionPanel({
         {isKnight && (
           <button
             onClick={handleSuperAttack}
-            disabled={loading || (currentPlayer as any).superAttacksAvailable <= 0}
-            className={`w-full py-2 px-4 rounded-lg ${
-              (currentPlayer as any).superAttacksAvailable > 0 
-                ? 'bg-yellow-600 hover:bg-yellow-500 text-white'
-                : 'bg-gray-700 text-gray-400 cursor-not-allowed'
-            }`}
+            disabled={loading || (currentPlayer as any).superAttacksAvailable <= 0 || isGameOver}
+            className={
+              (currentPlayer as any).superAttacksAvailable > 0 && !isGameOver
+                ? "action-button super-attack-knight" 
+                : "action-button disabled-special"
+            }
           >
             Super Attack {(currentPlayer as any).superAttacksAvailable > 0 ? 
               `(${(currentPlayer as any).superAttacksAvailable} available)` : 
@@ -131,22 +212,22 @@ export default function ActionPanel({
           <>
             <button
               onClick={handleSuperAttack}
-              disabled={loading || wizard!.mp < 40}
-              className={`w-full py-2 px-4 rounded-lg ${
-                wizard!.mp >= 40
-                  ? 'bg-purple-600 hover:bg-purple-500 text-white'
-                  : 'bg-gray-700 text-gray-400 cursor-not-allowed'
-              }`}
+              disabled={loading || wizard!.mp < 40 || isGameOver}
+              className={
+                wizard!.mp >= 40 && !isGameOver
+                  ? "action-button super-attack-wizard"
+                  : "action-button disabled-special"
+              }
             >
               Super Attack (40 MP) {wizard!.mp < 40 ? '- Not enough MP' : ''}
             </button>
             
-            <div className="mt-4">
+            <div className="heal-section">
               <select
                 value={selectedHealTarget}
                 onChange={(e) => setSelectedHealTarget(e.target.value)}
-                className="w-full p-2 bg-gray-700 rounded mb-2"
-                disabled={loading || wizard!.mp < 30}
+                className="heal-select"
+                disabled={loading || wizard!.mp < 30 || isGameOver}
               >
                 <option value="">Select heal target</option>
                 {gameSession.players.map(player => (
@@ -158,12 +239,12 @@ export default function ActionPanel({
               
               <button
                 onClick={handleHeal}
-                disabled={loading || !selectedHealTarget || wizard!.mp < 30}
-                className={`w-full py-2 px-4 rounded-lg ${
-                  wizard!.mp >= 30 && selectedHealTarget
-                    ? 'bg-green-600 hover:bg-green-500 text-white'
-                    : 'bg-gray-700 text-gray-400 cursor-not-allowed'
-                }`}
+                disabled={loading || !selectedHealTarget || wizard!.mp < 30 || isGameOver}
+                className={
+                  wizard!.mp >= 30 && selectedHealTarget && !isGameOver
+                    ? "action-button heal-button"
+                    : "action-button disabled-special"
+                }
               >
                 Heal (30 MP) {wizard!.mp < 30 ? '- Not enough MP' : ''}
               </button>

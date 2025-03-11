@@ -1,15 +1,69 @@
+:root {
+  --card-bg-color: rgba(31, 41, 55, 0.85);  /* Slightly transparent */
+  --primary-color: #3b82f6;
+  --secondary-color: #8b5cf6;
+  --success-color: #10b981;
+  --warning-color: #d97706;
+  --danger-color: #ef4444;
+}
+
+/* Apply to html and body to prevent default scrollbars */
+html, body {
+  margin: 0;
+  padding: 0;
+  overflow: hidden;
+  height: 100%;
+  width: 100%;
+}
+
 .lobby-container {
-  min-height: 100vh;
+  position: fixed; /* Change to fixed to prevent scrolling */
+  top: 0;
+  left: 0;
+  height: 100vh; /* Use viewport height instead of min-height */
+  width: 100vw;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  color: white;
+  overflow: hidden;  /* Prevent background from creating scrollbars */
+}
+
+.lobby-background {
+  position: fixed; /* Change to fixed to stay in place */
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background-image: url('/assets/Battleground-pale.png');  /* Path to your background image */
+  background-size: cover;
+  background-position: center;
+  background-repeat: no-repeat;
+  z-index: 0;
+  filter: brightness(0.7);  /* Darken the background a bit for better readability */
+}
+
+.lobby-content {
+  position: relative;
+  z-index: 1;
+  width: 100%;
   padding: 2rem;
+  display: flex;
+  justify-content: center;
+  /* Remove these two lines that were causing the scrollbar */
+  /* max-height: 100vh; */
+  /* overflow-y: auto; */
 }
 
 .lobby-card {
-  max-width: 28rem;
-  margin: 0 auto;
   background-color: var(--card-bg-color);
   border-radius: 0.5rem;
-  box-shadow: 0 10px 15px rgba(0, 0, 0, 0.2);
   padding: 1.5rem;
+  width: 100%;
+  max-width: 28rem;
+  box-shadow: 0 10px 25px rgba(0, 0, 0, 0.4);
+  backdrop-filter: blur(8px);  /* Add blur effect for a modern look */
+  border: 1px solid rgba(255, 255, 255, 0.1);  /* Subtle border */
 }
 
 .lobby-title {
@@ -17,6 +71,7 @@
   font-weight: bold;
   margin-bottom: 1.5rem;
   text-align: center;
+  text-shadow: 0 2px 4px rgba(0, 0, 0, 0.5);  /* Text shadow for better contrast */
 }
 
 .form-group {
@@ -26,15 +81,24 @@
 .form-label {
   display: block;
   margin-bottom: 0.5rem;
+  font-weight: 500;
 }
 
 .form-input {
   width: 100%;
-  padding: 0.5rem;
-  background-color: #4b5563;
+  padding: 0.75rem;
+  background-color: rgba(75, 85, 99, 0.6);
   border-radius: 0.25rem;
-  border: none;
-  color: var(--text-color);
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  box-sizing: border-box;
+  color: white;
+  transition: all 0.2s ease;
+}
+
+.form-input:focus {
+  outline: none;
+  border-color: var(--primary-color);
+  box-shadow: 0 0 0 2px rgba(59, 130, 246, 0.5);
 }
 
 .character-selection {
@@ -50,41 +114,109 @@
   flex-direction: column;
   align-items: center;
   cursor: pointer;
-  background-color: #4b5563;
+  background-color: rgba(75, 85, 99, 0.6);
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  color: white;
+  transition: all 0.2s ease;
 }
 
-.character-option:hover {
-  background-color: #6b7280;
+.character-option:hover:not(:disabled) {
+  background-color: rgba(107, 114, 128, 0.8);
+  transform: translateY(-2px);
 }
 
 .character-option.selected-knight {
   background-color: var(--warning-color);
+  transform: translateY(-2px);
 }
 
 .character-option.selected-wizard {
   background-color: var(--primary-color);
+  transform: translateY(-2px);
+}
+
+.character-name {
+  font-weight: bold;
+  margin-bottom: 0.25rem;
+}
+
+.character-description {
+  font-size: 0.75rem;
+  opacity: 0.8;
 }
 
 .button {
   width: 100%;
-  padding: 0.5rem;
+  padding: 0.75rem;
   border-radius: 0.25rem;
   font-weight: bold;
-  border: none;
   cursor: pointer;
+  border: none;
+  transition: all 0.2s ease;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+}
+
+.button:disabled {
+  opacity: 0.6;
+  cursor: not-allowed;
 }
 
 .button-create {
   background-color: var(--success-color);
-  margin-bottom: 1rem;
+  color: white;
+}
+
+.button-create:hover:not(:disabled) {
+  background-color: #059669;
+  transform: translateY(-2px);
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
 }
 
 .button-join {
   background-color: var(--secondary-color);
+  color: white;
+}
+
+.button-join:hover:not(:disabled) {
+  background-color: #7c3aed;
+  transform: translateY(-2px);
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
 }
 
 .divider {
   text-align: center;
   font-weight: bold;
   margin: 1rem 0;
+  position: relative;
+  color: rgba(255, 255, 255, 0.8);
+}
+
+.divider::before,
+.divider::after {
+  content: "";
+  position: absolute;
+  top: 50%;
+  width: 40%;
+  height: 1px;
+  background-color: rgba(255, 255, 255, 0.2);
+}
+
+.divider::before {
+  left: 0;
+}
+
+.divider::after {
+  right: 0;
+}
+
+@media (max-width: 640px) {
+  .character-selection {
+    flex-direction: column;
+  }
+  
+  .lobby-card {
+    margin: 1rem;
+    padding: 1.25rem;
+  }
 }
