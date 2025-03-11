@@ -22,7 +22,7 @@ export default function GameBoard({
 }: GameBoardProps) {
   // Animation states
   const [playerAnimations, setPlayerAnimations] = useState<{[key: string]: string}>({});
-  const [enemyAnimation, setEnemyAnimation] = useState<string>('idle');
+  const [enemyAnimation, setEnemyAnimation] = useState<'idle' | 'attack' | 'attacked' | 'death'>('idle');
   const [lastActionPlayer, setLastActionPlayer] = useState<string | null>(null);
   
   // Check if it's the current player's turn
@@ -144,8 +144,8 @@ export default function GameBoard({
   };
 
   // Function to get animation state for a player
-  const getPlayerAnimationState = (playerName: string) => {
-    return playerAnimations[playerName] || 'idle';
+  const getPlayerAnimationState = (playerName: string): 'idle' | 'attack' | 'holy-attack' | 'attacked' | 'heal' | 'death' => {
+    return (playerAnimations[playerName] || 'idle') as 'idle' | 'attack' | 'holy-attack' | 'attacked' | 'heal' | 'death';
   };
 
   return (

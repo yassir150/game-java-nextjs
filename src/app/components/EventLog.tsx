@@ -35,7 +35,7 @@ export default function EventLog({ events }: EventLogProps) {
               key={index} 
               className={`event-entry ${getEventTypeClass(event.description)}`}
             >
-              <div className="event-timestamp">{formatTime(event.timestamp)}</div>
+              <div className="event-timestamp">{formatTime(Number(event.timestamp))}</div>
               <div className="event-description">{event.description}</div>
             </div>
           ))
