@@ -17,7 +17,7 @@ export default function Home() {
         <div className="character-showcase">
           <div className="character-card wizard fixed-position">
             <Image 
-              src="/assets/wizard/wizard-idle-ezgif.com-crop.gif" 
+              src="/assets/wizard/wizard-idle.gif" 
               alt="Wizard" 
               width={250} 
               height={250}
@@ -26,7 +26,7 @@ export default function Home() {
           </div>
           <div className="character-card knight fixed-position">
             <Image 
-              src="/assets/king/king-idle-ezgif.com-crop.gif" 
+              src="/assets/king/king-idle.gif" 
               alt="Knight" 
               width={250} 
               height={250}
@@ -35,7 +35,7 @@ export default function Home() {
           </div>
           <div className="character-card cthulhu fixed-position">
             <Image 
-              src="/assets/cthulu/cthulu-idle-ezgif.com-crop.gif" 
+              src="/assets/cthulu/cthulu-idle.gif" 
               alt="Cthulhu" 
               height={350} 
               width={290}
