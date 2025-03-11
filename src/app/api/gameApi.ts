@@ -6,7 +6,9 @@ const API_URL = 'http://34.34.49.188:8080/api/game'; // Adjust to your backend U
 export const gameApi = {
   // Get available sessions
   async getAvailableSessions(): Promise<string[]> {
-    const response = await fetch(`${API_URL}/sessions`);
+    const response = await fetch(`${API_URL}/sessions`,{
+      method: 'GET',
+    });
     return response.json();
   },
 
